@@ -21,7 +21,11 @@ class Vector:
         return self._params[item]
 
     def transform(self, *fns: Callable[['Vector'], 'Vector']) -> 'Vector':
-        ...
+        return reduce(
+            lambda acc, fn: fn(acc),  # apply next function to accumulated vector
+            fns,                      # iterable of functions
+            self                      # initial value
+        )
 
     def __str__(self):
         return f"Vector([{', '.join([str(param) for param in self._params])}])"
